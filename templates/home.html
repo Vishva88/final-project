@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Disease Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1b1b1b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        #loading-screen .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #007bff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Hide loading screen when page is loaded */
+        body.loaded #loading-screen {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 60px; /* Collapsed width */
+            height: 100vh; /* Full viewport height */
+            background: #1b1b1b;
+            padding-top: 20px;
+            transition: width 0.3s ease;
+            overflow: hidden; /* Disable scrolling */
+            z-index: 1000;
+            display: flex;
+            flex-direction: column; /* Arrange items vertically */
+        }
+
+        body.dark-mode .sidebar {
+            background: #000;
+        }
+
+        .sidebar.expanded {
+            width: 250px; /* Expanded width */
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1; /* Allow the list to grow and fill the space */
+            overflow-y: auto; /* Enable scrolling only if content overflows */
+        }
+
+        .sidebar ul li {
+            padding: 15px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .sidebar ul li a i {
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        .sidebar ul li a:hover {
+            background: #072d56;
+            padding-left: 15px;
+            transition: 0.3s;
+            border-radius: 5px;
+        }
+
+        .sidebar ul li a span {
+            display: none; /* Hide text labels by default */
+        }
+
+        .sidebar.expanded ul li a span {
+            display: inline; /* Show text labels when expanded */
+        }
+
+        /* Search Bar in Sidebar */
+        #searchBar {
+            width: 80%;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: none;
+            display: none;
+        }
+
+        .sidebar.expanded #searchBar {
+            display: block;
+        }
+
+        /* Hamburger Menu */
+        .menu-icon {
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .menu-icon:hover {
+            color: #ffa500;
+        }
+
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .sidebar.expanded ~ .overlay {
+            display: block;
+        }
+
+        /* Content Area */
+        .content {
+            margin-left: 60px; /* Match collapsed sidebar width */
+            padding: 40px;
+            width: 100%;
+            transition: margin-left 0.3s ease;
+        }
+
+        body.dark-mode .content {
+            background: #121212;
+            color: #ffffff;
+        }
+
+        .sidebar.expanded ~ .content {
+            margin-left: 250px; /* Match expanded sidebar width */
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            background: url('{{ url_for('static', filename='image_h.jpg') }}') no-repeat center center/cover;
+            height: 350px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header h1, header p {
+            position: relative;
+            color: white;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        /* Get Started Button */
+        .get-started {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .get-started a {
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .get-started a:hover {
+            background: #218838;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .how-it-works h2 {
+            color: #007bff;
+        }
+
+        .how-it-works .steps {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .how-it-works .step {
+            width: 220px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .step {
+            background: #1e1e1e;
+            color: #ffffff;
+        }
+
+        /* Footer */
+        footer {
+            background: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        footer ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        footer ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Notification System */
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            animation: slideIn 0.5s ease-in-out;
+            display: none;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #dc3545;
+        }
+
+        .success {
+            background: #e8f5e9;
+            color: #28a745;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Feedback Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 300px;
+            z-index: 1000;
+        }
+
+        body.dark-mode .modal {
+            background: #1e1e1e;
+            color: #ffffff;
+        }
+
+        .modal textarea {
+            width: 100%;
+            height: 100px;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .modal button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s ease;
+        }
+
+        .modal button:hover {
+            background: #0056b3;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+        <input type="text" id="searchBar" placeholder="Search..." oninput="searchContent()" />
+        <ul>
+            <li><a href="/"><i class="fas fa-home"></i> <span>Home</span></a></li>
+            {% if 'user' not in session %}
+                <li><a href="/login"><i class="fas fa-user"></i> <span>Login & Register</span></a></li>
+            {% endif %}
+            <li><a href="/about"><i class="fas fa-info-circle"></i> <span>About</span></a></li>
+            <li><a href="/contact"><i class="fas fa-envelope"></i> <span>Contact Us</span></a></li>
+            {% if 'user' in session %}
+                <li><a href="/patient-form"><i class="fas fa-file-medical"></i> <span>Patient Form</span></a></li>
+                <li><a href="/symptom_selection"><i class="fas fa-stethoscope"></i> <span>Disease Prediction</span></a></li>
+                <li><a href="/patient_history"><i class="fas fa-history"></i> <span>Patient History</span></a></li>
+                <li><a href="/profile"><i class="fas fa-user-circle"></i> <span>Profile</span></a></li>
+                {% if 'user' in session %}
+                    <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+                {% endif %}
+                <li><a href="#" onclick="openLogoutModal()"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
+            {% endif %}
+            <li>
+                <a href="#" onclick="toggleDarkMode()">
+                    <i class="fas fa-moon"></i> <span>Dark Mode</span>
+                </a>
+            </li>
+            <li><a href="#" onclick="openFeedbackModal()"><i class="fas fa-comment"></i> <span>Feedback</span></a></li>
+        </ul>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Content Area -->
+    <div class="content">
+        <header>
+            <h1>Disease Prediction System</h1>
+            <p>Empowering Early Detection and Better Health</p>
+        </header>
+        <div class="get-started">
+            {% if 'user' not in session %}
+                <a href="/login">Get Started Now</a>
+            {% else %}
+                <a href="/patient-form">Predict Disease</a>
+            {% endif %}
+        </div>
+        <section class="how-it-works">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <h3>Step 1</h3>
+                    <p>Enter your symptoms.</p>
+                </div>
+                <div class="step">
+                    <h3>Step 2</h3>
+                    <p>System analyzes your inputs.</p>
+                </div>
+                <div class="step">
+                    <h3>Step 3</h3>
+                    <p>Receive a prediction.</p>
+                </div>
+            </div>
+        </section>
+        <footer>
+            <p>&copy; 2025 Disease Prediction System. All rights reserved.</p>
+            <ul>
+                <li><a href="/privacy">Privacy Policy</a></li>
+                <li><a href="/terms">Terms of Service</a></li>
+                <li><a href="/faq">FAQs</a></li>
+            </ul>
+        </footer>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="message"></div>
+
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="modal">
+        <div class="close-modal-icon" onclick="closeFeedbackModal()">&times;</div>
+        <h3>Feedback</h3>
+        <textarea id="feedbackInput" placeholder="Your feedback..."></textarea>
+        <button onclick="submitFeedback()">Submit</button>
+    </div>
+    <div id="modalOverlay" class="modal-overlay"></div>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutModal" class="modal">
+        <div class="close-modal-icon" onclick="closeLogoutModal()">&times;</div>
+        <h3>Logout Confirmation</h3>
+        <p>Are you sure you want to logout?</p>
+        <button onclick="confirmLogout()">Yes, Logout</button>
+        <button onclick="closeLogoutModal()">Cancel</button>
+    </div>
+    <div id="logoutModalOverlay" class="modal-overlay"></div>
+
+    <script>
+        // JavaScript Functions
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("overlay");
+            sidebar.classList.toggle("expanded");
+            overlay.classList.toggle("active");
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        function searchContent() {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            const links = document.querySelectorAll('.sidebar ul li a span');
+
+            links.forEach(link => {
+                const text = link.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    link.parentElement.style.display = 'flex';
+                } else {
+                    link.parentElement.style.display = 'none';
+                }
+            });
+        }
+
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `message ${type}`;
+            notification.style.display = 'block';
+
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        function openFeedbackModal() {
+            document.getElementById('feedbackModal').style.display = 'block';
+            document.getElementById('modalOverlay').style.display = 'block';
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById('feedbackModal').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        function submitFeedback() {
+            const feedback = document.getElementById('feedbackInput').value;
+            if (feedback) {
+                showNotification('Thank you for your feedback!', 'success');
+                closeFeedbackModal();
+            } else {
+                showNotification('Please enter your feedback.', 'error');
+            }
+        }
+
+        function openLogoutModal() {
+            document.getElementById('logoutModal').style.display = 'block';
+            document.getElementById('logoutModalOverlay').style.display = 'block';
+        }
+
+        function closeLogoutModal() {
+            document.getElementById('logoutModal').style.display = 'none';
+            document.getElementById('logoutModalOverlay').style.display = 'none';
+        }
+
+        function confirmLogout() {
+            window.location.href = "/logout"; // Redirect to the logout route
+        }
+
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // Show modal if logout was successful (server-side check)
+        {% if session.get('logout_success') %}
+            // Check if the current page is the home page
+            if (window.location.pathname === "/") {
+                showModal();
+                {{ session.pop('logout_success', None) }}  // Clear the session flag after showing the modal
+            }
+        {% endif %}
+
+        // Hide loading screen when page is fully loaded
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
+    </script>
+</body>
+</html>

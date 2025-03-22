@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Disease Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        /* Navbar Styles */
+        nav {
+            background-color: #0a25bd; 
+            padding: 10px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%; /* Full width */
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-end; /* Align items to the right */
+            padding-right: 20px; /* Add padding to the right */
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white; /* White icons */
+            text-decoration: none;
+            font-size: 1.5rem; /* Icon size */
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li a:hover {
+            color: #ffdd57; /* Yellow on hover */
+        }
+
+        h1 {
+            text-align: center;
+            margin: 80px 0 20px; /* Adjusted for fixed navbar */
+            font-size: 2.5rem;
+        }
+
+        .contact-section {
+            padding: 40px 20px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+        }
+
+        .contact-section p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+
+        .contact-details {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .contact-details div {
+            flex: 1 1 300px;
+            margin: 10px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-details div h2 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .social-links {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .social-links a {
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 1.5rem;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Chat Feature Styles */
+        .chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden by default */
+        }
+
+        .chat-header {
+            background: #007bff; /* Same as navbar */
+            color: white;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .chat-header button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .chat-body {
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            background: #f1f1f1; /* Light gray for user messages */
+        }
+
+        .chat-message.admin {
+            background: #007bff; /* Same as navbar for admin messages */
+            color: white;
+            text-align: right;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .chat-input button {
+            background: #007bff; /* Same as navbar */
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .chat-input button:hover {
+            background: #0056b3; /* Darker shade for hover */
+        }
+
+        .chat-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #007bff; /* Same as navbar */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-toggle:hover {
+            background: #0056b3; /* Darker shade for hover */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <ul>
+            <li><a href="/" title="Home">🏠 Home</a></li>
+            <li><a href="/about" title="About">ℹ️ About</a></li>
+            <li><a href="/contact" title="Contact Us">✉️ Contact Us</a></li>
+            <li><a href="/symptom_selection" title="Disease Prediction">🩺 Disease Prediction</a></li>
+            <li><a href="/patient_history" title="Patient History">📜 Patient History</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <h1>Contact Us</h1>
+    <section class="contact-section">
+        <p>We value your feedback and questions. Reach out to us through any of the methods below, and our team will assist you promptly.</p>
+        <div class="contact-details">
+            <div>
+                <h2>Email</h2>
+                <p><a href="mailto:support@diseaseprediction.com" style="color: #ffdd57;">support@diseaseprediction.com</a></p>
+            </div>
+            <div>
+                <h2>Phone</h2>
+                <p>+1-800-123-4567</p>
+            </div>
+            <div>
+                <h2>Address</h2>
+                <p>123 Health Street, Wellness City, HC 45678</p>
+            </div>
+            <div>
+                <h2>Working Hours</h2>
+                <p>Monday to Friday: 9:00 AM - 6:00 PM<br>Saturday: 10:00 AM - 4:00 PM<br>Sunday: Closed</p>
+            </div>
+        </div>
+        <div class="social-links">
+            <h2>Follow Us</h2>
+            <a href="#" title="Twitter">&#x1F426;</a>
+            <a href="#" title="LinkedIn">&#x1F464;</a>
+            <a href="#" title="Instagram">&#x1F4F7;</a>
+            <a href="#" title="Facebook">&#x1F4F2;</a>
+        </div>
+    </section>
+
+    <!-- Chat Toggle Button -->
+    <button class="chat-toggle" onclick="toggleChat()">💬 Chat</button>
+
+    <!-- Chat Container -->
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <h3>Chat with Us</h3>
+            <button onclick="toggleChat()">×</button>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <!-- Chat messages will be dynamically added here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Type your message...">
+            <button id="sendButton" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 Disease Prediction. All rights reserved.
+    </footer>
+
+    <script>
+        // JavaScript for Chat Feature
+        const chatContainer = document.getElementById('chatContainer');
+        const chatBody = document.getElementById('chatBody');
+        const chatInput = document.getElementById('chatInput');
+        const sendButton = document.getElementById('sendButton');
+        let adminResponded = false; // Flag to track if admin has responded
+
+        // Toggle chat visibility
+        function toggleChat() {
+            chatContainer.style.display = chatContainer.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Send message
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message && !adminResponded) {
+                // Add user message to chat
+                const userMessage = document.createElement('div');
+                userMessage.className = 'chat-message';
+                userMessage.textContent = message;
+                chatBody.appendChild(userMessage);
+
+                // Clear input
+                chatInput.value = '';
+
+                // Simulate admin response
+                setTimeout(() => {
+                    const adminMessage = document.createElement('div');
+                    adminMessage.className = 'chat-message admin';
+                    adminMessage.textContent = 'Thank you for your message! We will get back to you shortly.';
+                    chatBody.appendChild(adminMessage);
+                    chatBody.scrollTop = chatBody.scrollHeight; // Scroll to bottom
+
+                    // Disable input and button after admin response
+                    chatInput.disabled = true;
+                    sendButton.disabled = true;
+                    adminResponded = true; // Set flag to true
+                }, 1000);
+            }
+        }
+
+        // Automatically delete messages after 24 hours (simulated)
+        function deleteMessagesAfter24Hours() {
+            setTimeout(() => {
+                chatBody.innerHTML = ''; // Clear all messages
+            }, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
+        }
+
+        // Initialize chat
+        deleteMessagesAfter24Hours();
+    </script>
+</body>
+</html>

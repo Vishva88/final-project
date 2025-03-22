@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Symptoms - Disease Prediction</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        /* Top Navigation Bar */
+        .navbar {
+            background-color: #0a25bd;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-end; /* Align items to the right */
+            padding-right: 20px; /* Add padding to the right */
+        }
+
+        .navbar ul li {
+            margin: 0;
+        }
+
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #0056b3;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            max-height: 80vh; /* Limit container height */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        .category {
+            margin-bottom: 20px;
+        }
+
+        .category h3 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .symptom-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .symptom-checkbox {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .symptom-checkbox:hover {
+            background-color: #f8f9fa;
+        }
+
+        .symptom-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            border: 2px solid #007bff;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .symptom-checkbox input[type="checkbox"]:checked {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .symptom-checkbox label {
+            font-size: 1.1rem;
+            cursor: pointer;
+            color: #444;
+            flex-grow: 1;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 250px;
+            margin: 30px auto;
+            padding: 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <ul>
+            <li><a href="/" title="Home">🏠 Home</a></li>
+            <li><a href="/about" title="About">ℹ️ About</a></li>
+            <li><a href="/contact" title="Contact Us">✉️ Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <h1>Select Your Symptoms</h1>
+            <p>Please select all the symptoms you are experiencing from the categories below</p>
+
+            <form method="POST" action="{{ url_for('symptom_selection') }}">
+                <!-- General Symptoms -->
+                <div class="category">
+                    <h3>General Symptoms</h3>
+                    <div class="symptom-list">
+                        {% for symptom in [
+                            'fatigue', 'weight_gain', 'weight_loss', 'anxiety', 'mood_swings', 'restlessness', 'lethargy', 'malaise', 'depression', 'irritability', 'lack_of_concentration', 'altered_sensorium', 'coma'
+                        ] %}
+                        <div class="symptom-checkbox">
+                            <input type="checkbox" id="{{ symptom }}" name="symptoms" value="{{ symptom }}">
+                            <label for="{{ symptom }}">{{ symptom|replace('_', ' ')|title }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Skin-Related Symptoms -->
+                <div class="category">
+                    <h3>Skin-Related Symptoms</h3>
+                    <div class="symptom-list">
+                        {% for symptom in [
+                            'itching', 'skin_rash', 'nodal_skin_eruptions', 'yellowish_skin', 'red_spots_over_body', 'blister', 'red_sore_around_nose', 'yellow_crust_ooze', 'skin_peeling', 'silver_like_dusting', 'small_dents_in_nails', 'inflammatory_nails', 'brittle_nails', 'blackheads', 'pus_filled_pimples', 'scurring'
+                        ] %}
+                        <div class="symptom-checkbox">
+                            <input type="checkbox" id="{{ symptom }}" name="symptoms" value="{{ symptom }}">
+                            <label for="{{ symptom }}">{{ symptom|replace('_', ' ')|title }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Respiratory Symptoms -->
+                <div class="category">
+                    <h3>Respiratory Symptoms</h3>
+                    <div class="symptom-list">
+                        {% for symptom in [
+                            'continuous_sneezing', 'cough', 'breathlessness', 'phlegm', 'throat_irritation', 'sinus_pressure', 'runny_nose', 'congestion', 'chest_pain', 'rusty_sputum', 'mucoid_sputum', 'blood_in_sputum'
+                        ] %}
+                        <div class="symptom-checkbox">
+                            <input type="checkbox" id="{{ symptom }}" name="symptoms" value="{{ symptom }}">
+                            <label for="{{ symptom }}">{{ symptom|replace('_', ' ')|title }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Gastrointestinal Symptoms -->
+                <div class="category">
+                    <h3>Gastrointestinal Symptoms</h3>
+                    <div class="symptom-list">
+                        {% for symptom in [
+                            'stomach_pain', 'acidity', 'ulcers_on_tongue', 'vomiting', 'indigestion', 'loss_of_appetite', 'nausea', 'abdominal_pain', 'diarrhoea', 'constipation', 'pain_during_bowel_movements', 'pain_in_anal_region', 'bloody_stool', 'irritation_in_anus', 'passage_of_gases', 'belly_pain', 'stomach_bleeding', 'distention_of_abdomen', 'swelling_of_stomach', 'fluid_overload'
+                        ] %}
+                        <div class="symptom-checkbox">
+                            <input type="checkbox" id="{{ symptom }}" name="symptoms" value="{{ symptom }}">
+                            <label for="{{ symptom }}">{{ symptom|replace('_', ' ')|title }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Urinary Symptoms -->
+                <div class="category">
+                    <h3>Urinary Symptoms</h3>
+                    <div class="symptom-list">
+                        {% for symptom in [
+                            'burning_micturition', 'spotting_urination', 'dark_urine', 'yellow_urine', 'bladder_discomfort', 'foul_smell_of_urine', 'continuous_feel_of_urine', 'polyuria'
+                        ] %}
+                        <div class="symptom-checkbox">
+                            <input type="checkbox" id="{{ symptom }}" name="symptoms" value="{{ symptom }}">
+                            <label for="{{ symptom }}">{{ symptom|replace('_', ' ')|title }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Musculoskeletal Symptoms -->
+                <div class="category">
+                    <h3>Musculoskeletal Symptoms</h3>
+                    <div class="symptom-list">
+                        {% for symptom in [
+                            'joint_pain', 'muscle_wasting', 'muscle_pain', 'muscle_weakness', 'knee_pain', 'hip_joint_pain', 'stiff_neck', 'swelling_joints', 'movement_stiffness', 'painful_walking', 'weakness_in_limbs', 'weakness_of_one_body_side', 'cramps', 'bruising'
+                        ] %}
+                        <div class="symptom-checkbox">
+                            <input type="checkbox" id="{{ symptom }}" name="symptoms" value="{{ symptom }}">
+                            <label for="{{ symptom }}">{{ symptom|replace('_', ' ')|title }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Neurological Symptoms -->
+                <div class="category">
+                    <h3>Neurological Symptoms</h3>
+                    <div class="symptom-list">
+                        {% for symptom in [
+                            'dizziness', 'headache', 'spinning_movements', 'loss_of_balance', 'unsteadiness', 'slurred_speech', 'loss_of_smell', 'visual_disturbances', 'blurred_and_distorted_vision', 'lack_of_concentration'
+                        ] %}
+                        <div class="symptom-checkbox">
+                            <input type="checkbox" id="{{ symptom }}" name="symptoms" value="{{ symptom }}">
+                            <label for="{{ symptom }}">{{ symptom|replace('_', ' ')|title }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Cardiovascular Symptoms -->
+                <div class="category">
+                    <h3>Cardiovascular Symptoms</h3>
+                    <div class="symptom-list">
+                        {% for symptom in [
+                            'fast_heart_rate', 'palpitations', 'prominent_veins_on_calf', 'swollen_blood_vessels'
+                        ] %}
+                        <div class="symptom-checkbox">
+                            <input type="checkbox" id="{{ symptom }}" name="symptoms" value="{{ symptom }}">
+                            <label for="{{ symptom }}">{{ symptom|replace('_', ' ')|title }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Endocrine/Metabolic Symptoms -->
+                <div class="category">
+                    <h3>Endocrine/Metabolic Symptoms</h3>
+                    <div class="symptom-list">
+                        {% for symptom in [
+                            'irregular_sugar_level', 'excessive_hunger', 'increased_appetite', 'swollen_legs', 'puffy_face_and_eyes', 'enlarged_thyroid', 'swollen_extremeties', 'obesity'
+                        ] %}
+                        <div class="symptom-checkbox">
+                            <input type="checkbox" id="{{ symptom }}" name="symptoms" value="{{ symptom }}">
+                            <label for="{{ symptom }}">{{ symptom|replace('_', ' ')|title }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Reproductive Symptoms -->
+                <div class="category">
+                    <h3>Reproductive Symptoms</h3>
+                    <div class="symptom-list">
+                        {% for symptom in [
+                            'abnormal_menstruation', 'dischromic_patches', 'family_history', 'receiving_blood_transfusion', 'receiving_unsterile_injections', 'history_of_alcohol_consumption'
+                        ] %}
+                        <div class="symptom-checkbox">
+                            <input type="checkbox" id="{{ symptom }}" name="symptoms" value="{{ symptom }}">
+                            <label for="{{ symptom }}">{{ symptom|replace('_', ' ')|title }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Other Symptoms -->
+                <div class="category">
+                    <h3>Other Symptoms</h3>
+                    <div class="symptom-list">
+                        {% for symptom in [
+                            'shivering', 'chills', 'high_fever', 'mild_fever', 'cold_hands_and_feets', 'sweating', 'watering_from_eyes', 'redness_of_eyes', 'sunken_eyes', 'patches_in_throat', 'toxic_look_(typhos)', 'internal_itching', 'drying_and_tingling_lips', 'extra_marital_contacts', 'toxic_look_(typhos)', 'depression', 'irritability', 'muscle_pain', 'altered_sensorium', 'red_spots_over_body', 'belly_pain', 'abnormal_menstruation', 'dischromic_patches', 'watering_from_eyes', 'increased_appetite', 'polyuria', 'family_history', 'mucoid_sputum', 'rusty_sputum', 'lack_of_concentration', 'visual_disturbances', 'receiving_blood_transfusion', 'receiving_unsterile_injections', 'coma', 'stomach_bleeding', 'distention_of_abdomen', 'history_of_alcohol_consumption', 'fluid_overload', 'blood_in_sputum', 'prominent_veins_on_calf', 'palpitations', 'painful_walking', 'pus_filled_pimples', 'blackheads', 'scurring', 'skin_peeling', 'silver_like_dusting', 'small_dents_in_nails', 'inflammatory_nails', 'blister', 'red_sore_around_nose', 'yellow_crust_ooze'
+                        ] %}
+                        <div class="symptom-checkbox">
+                            <input type="checkbox" id="{{ symptom }}" name="symptoms" value="{{ symptom }}">
+                            <label for="{{ symptom }}">{{ symptom|replace('_', ' ')|title }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Predict Disease</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

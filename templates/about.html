@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Disease Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        /* Monochrome Navbar */
+        nav {
+            background-color: #0a25bd;
+            padding: 10px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%; /* Full width */
+            z-index: 1000;
+            display: flex;
+            justify-content: flex-end; /* Align to the right */
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            padding-right: 20px; /* Add padding to the right */
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #f3f6f1; /* Black text */
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #007bff; /* Blue on hover */
+        }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 20px; /* Adjusted for fixed navbar */
+            background: #007bff;
+            color: white;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .container h2 {
+            color: #007bff;
+            text-align: center;
+        }
+
+        .container p {
+            line-height: 1.8;
+            margin: 15px 0;
+        }
+
+        .features {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .features li {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-left: 4px solid #007bff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Monochrome Navbar -->
+    <nav>
+        <ul>
+            <li><a href="/" title="Home">🏠 Home</a></li>
+            <li><a href="/contact" title="Contact Us">✉️ Contact Us</a></li>
+            <li><a href="/symptom_selection" title="Disease Prediction">🩺 Disease Prediction</a></li>
+            <li><a href="/patient_history" title="Patient History">📜 Patient History</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header -->
+    <header>
+        <h1>About Us</h1>
+        <p>Empowering individuals with early disease detection and insights.</p>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h2>Our Mission</h2>
+        <p>
+            Our mission is to provide a reliable and accessible platform for individuals to identify potential health issues early. 
+            By leveraging advanced machine learning algorithms, we aim to contribute to healthier communities through early detection and prevention.
+        </p>
+
+        <h2>What We Offer</h2>
+        <ul class="features">
+            <li><strong>Accurate Disease Prediction:</strong> Analyze symptoms using AI to provide probable diagnoses.</li>
+            <li><strong>User-Friendly Interface:</strong> Simple and intuitive design for easy interaction.</li>
+            <li><strong>Comprehensive Symptom Database:</strong> Covers a wide range of diseases and symptoms.</li>
+            <li><strong>Secure Patient Data:</strong> Ensures confidentiality and privacy for all users.</li>
+        </ul>
+
+        <h2>How It Works</h2>
+        <p>
+            The Disease Prediction System uses a combination of supervised machine learning models, including Decision Trees. 
+            Users can input their symptoms into the system, and it processes this data to predict potential health issues. 
+            The system provides recommendations to consult medical professionals for further diagnosis and treatment.
+        </p>
+
+        <h2>Feature Process of the Project</h2>
+        <p>
+            The system follows a step-by-step process to provide accurate disease predictions:
+        </p>
+        <ul class="features">
+            <li><strong>Step 1: User Login/Registration</strong> - Users must log in or register to access the system. This ensures data security and personalized predictions.</li>
+            <li><strong>Step 2: Patient Form</strong> - Users fill out a form with their basic details (e.g., name, age, gender) to help the system tailor predictions.</li>
+            <li><strong>Step 3: Symptom Selection</strong> - Users select symptoms from a predefined list or enter them manually.</li>
+            <li><strong>Step 4: Disease Prediction</strong> - The system processes the symptoms using machine learning algorithms (e.g., Decision Tree) to predict potential diseases.</li>
+            <li><strong>Step 5: Result Display</strong> - The predicted disease(s) are displayed along with recommendations for further action.</li>
+            <li><strong>Step 6: Patient History</strong> - Users can view their past predictions and track their health over time.</li>
+        </ul>
+
+        <h2>Technology Stack</h2>
+        <p>
+            Our system is built with the following technologies:
+        </p>
+        <ul class="features">
+            <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
+            <li><strong>Backend:</strong> Python (Flask)</li>
+            <li><strong>Database:</strong> Firebase</li>
+            <li><strong>Machine Learning Models:</strong> Decision Tree</li>
+        </ul>
+
+        <h2>Why Choose Us?</h2>
+        <p>
+            In a world where timely medical intervention can save lives, our platform serves as a first step in understanding health conditions. 
+            We strive to empower individuals by providing them with early insights into their health, promoting awareness, and enabling proactive care.
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Disease Prediction System. All rights reserved.</p>
+        <p>Follow us on:
+            <a href="#">Facebook</a> | 
+            <a href="#">Twitter</a> | 
+            <a href="#">LinkedIn</a>
+        </p>
+    </footer>
+</body>
+</html>

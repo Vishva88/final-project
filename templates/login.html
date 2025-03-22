@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        /* CSS Styles (unchanged) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom right, #007bff, #6610f2);
+        }
+
+        .container {
+            display: flex;
+            width: 800px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .login-section {
+            flex: 1;
+            padding: 40px;
+            position: relative;
+        }
+
+        .signup-section {
+            flex: 1;
+            background: linear-gradient(to bottom right, #007bff, #6610f2);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+            font-size: 24px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .signup-section h3 {
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+
+        .signup-btn {
+            background: white;
+            color: #007bff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .signup-btn:hover {
+            background: #f1f1f1;
+            transform: translateY(-2px);
+        }
+
+        .close-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .close-icon:hover {
+            color: #dc3545;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 300px;
+            z-index: 1000;
+        }
+
+        .modal .close-modal-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .modal .close-modal-icon:hover {
+            color: #dc3545;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .error {
+            background: #ffebee;
+            color: #dc3545;
+        }
+
+        .success {
+            background: #e8f5e9;
+            color: #28a745;
+        }
+
+        .forgot-password-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .forgot-password-link a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .forgot-password-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-section">
+            <!-- Close Icon (X) -->
+            <div class="close-icon" onclick="redirectToHome()">&times;</div>
+            <h2>Login to Your Account</h2>
+
+            <!-- Message Display -->
+            <div id="messageContainer">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="message {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" method="POST" action="{{ url_for('login') }}">
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit" class="btn">Login</button>
+            </form>
+
+            <!-- Forgot Password Link -->
+            <div class="forgot-password-link">
+                <a href="{{ url_for('forgot_password') }}">Forgot Password?</a>
+            </div>
+        </div>
+        <div class="signup-section">
+            <h3>New Here?</h3>
+            <p>Register and discover great opportunities!</p>
+            <button class="signup-btn" onclick="redirectToRegister()">Register</button>
+        </div>
+    </div>
+
+    <!-- Popup Modal for Login Success -->
+    <div id="successModal" class="modal">
+        <!-- Close Icon (X) for Modal -->
+        <div class="close-modal-icon" onclick="closeModal()">&times;</div>
+        <p>Login successful! Click Continue to proceed.</p>
+        <button onclick="redirectToDashboard()">Continue</button>
+    </div>
+    <div id="modalOverlay" class="modal-overlay"></div>
+
+    <script>
+        // JavaScript Functions
+        function showModal() {
+            document.getElementById('successModal').style.display = 'block';
+            document.getElementById('modalOverlay').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        function redirectToDashboard() {
+            // Redirect based on user role
+            const role = "{{ session.user_data.role if session.user_data else 'user' }}";
+            if (role === 'admin') {
+                window.location.href = "{{ url_for('dashboard') }}";
+            } else {
+                window.location.href = "{{ url_for('patient_form') }}";
+            }
+        }
+
+        function redirectToRegister() {
+            window.location.href = "{{ url_for('register') }}";
+        }
+
+        function redirectToHome() {
+            window.location.href = "{{ url_for('home') }}";
+        }
+
+        // Show modal if login was successful (server-side check)
+        {% if session.get('login_success') %}
+            showModal();
+            {% set _ = session.pop('login_success') %}  // Clear the session flag
+        {% endif %}
+    </script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Patient Details Form</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eef6fc;
+            color: #333;
+        }
+
+        .flash-messages {
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .flash-message {
+            padding: 10px 20px;
+            margin: 10px 0;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Monochrome Navbar */
+        nav {
+            background-color: #0a25bd; 
+            padding: 10px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%; /* Full width */
+            z-index: 1000;
+            display: flex;
+            justify-content: flex-end; /* Align to the right */
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            padding-right: 20px; /* Add padding to the right */
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #eae6e6; /* Black text */
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #0073e6; /* Blue on hover */
+        }
+
+        .form-container {
+            max-width: 700px;
+            margin: 100px auto 30px; /* Adjusted for fixed navbar */
+            padding: 25px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            color: #0073e6;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input[type="file"] {
+            padding: 5px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #0073e6;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #005bb5;
+        }
+
+        .file-info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+                margin: 90px 20px 20px; /* Adjusted for fixed navbar */
+            }
+
+            nav ul li {
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Messages Section -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Monochrome Navbar -->
+    <nav>
+        <ul>
+            <li><a href="/" title="Home">🏠 Home</a></li>
+            <li><a href="/about" title="About">ℹ️ About</a></li>
+            <li><a href="/contact" title="Contact Us">✉️ Contact Us</a></li>
+            <li><a href="/symptom_selection" title="Disease Prediction">🩺 Disease Prediction</a></li>
+            <li><a href="/patient_history" title="Patient History">📜 Patient History</a></li>
+        </ul>
+    </nav>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <h2>Advanced Patient Details Form</h2>
+        <form id="patientForm" method="POST" action="{{ url_for('patient_form') }}">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter full name" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" min="0" max="120" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <textarea id="address" name="address" rows="3" placeholder="Enter complete address" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="contact_no">Contact Number:</label>
+                <input type="text" id="contact_no" name="contact_no" placeholder="Enter phone number" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter email address" required>
+            </div>
+            <div class="form-group">
+                <label for="file_upload">Upload Medical Reports <span class="optional">(Optional)</span>:</label>
+                <input type="file" id="file_upload" name="file_upload" accept=".pdf, .jpg, .png">
+                <span class="file-info">Accepted formats: PDF, JPG, PNG</span>
+            </div>
+            <button type="submit" class="submit-btn">Next</button>
+        </form>
+    </div>
+</body>
+</html>

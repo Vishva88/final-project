@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Prediction Result</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f8fa;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .prediction-box {
+            background-color: #e8f4f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .prediction-box h2 {
+            color: #2980b9;
+            margin-top: 0;
+        }
+
+        .symptoms-list {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .symptoms-list h3 {
+            color: #34495e;
+            margin-top: 0;
+        }
+
+        .info-section {
+            margin-bottom: 25px;
+        }
+
+        .info-section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        li:before {
+            content: "•";
+            color: #3498db;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .disclaimer {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 6px;
+            color: #856404;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Disease Prediction Result</h1>
+
+        <div class="prediction-box">
+            <h2>Predicted Disease: {{ predicted_disease }}</h2>
+        </div>
+
+        <div class="symptoms-list">
+            <h3>Selected Symptoms:</h3>
+            <ul>
+                {% for symptom in selected_symptoms %}
+                <li>{{ symptom|replace('_', ' ')|title }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h3>Description</h3>
+            <p>{{ disease_info.description }}</p>
+        </div>
+
+        <div class="info-section">
+            <h3>Causes</h3>
+            <p>{{ disease_info.causes }}</p>
+        </div>
+
+        <div class="info-section">
+            <h3>Treatment</h3>
+            <ul>
+                {% for item in disease_info.treatment %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h3>Prevention</h3>
+            <ul>
+                {% for item in disease_info.prevention %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Disclaimer:</strong> This prediction is based on the symptoms you provided and should not be considered as a final diagnosis. Please consult with a healthcare professional for proper medical advice and treatment.
+        </div>
+
+        <div class="action-buttons">
+            <a href="{{ url_for('symptom_selection') }}" class="btn btn-primary">Check Another Disease</a>
+            <a href="{{ url_for('patient_history') }}" class="btn btn-secondary">View History</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile & Dashboard</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            color: #333;
+        }
+
+        /* Top Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background-color: #0a25bd;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%; /* Full width */
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar ul li {
+            display: inline-block;
+        }
+
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Space between icon and text */
+        }
+
+        .navbar ul li a:hover {
+            background: #072d56;
+        }
+
+        /* Content Area */
+        .content {
+            padding: 80px 40px 40px; /* Adjusted for navbar */
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Dashboard and Profile Container */
+        .dashboard-container {
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header h1 {
+            color: #007bff;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-card h3 {
+            color: #28a745;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .dashboard-card p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .dashboard-card p strong {
+            color: #333;
+        }
+
+        /* Profile Section */
+        .profile-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .profile-card {
+            flex: 1;
+            min-width: 250px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-card h3 {
+            color: #28a745;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .profile-card p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .profile-card p strong {
+            color: #333;
+        }
+
+        /* Edit Button */
+        .edit-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            background: #0056b3;
+        }
+
+        /* Recent Activity Section */
+        .recent-activity {
+            margin-top: 30px;
+        }
+
+        .recent-activity h3 {
+            color: #007bff;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .activity-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .activity-list li {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .activity-list li p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .activity-list li .timestamp {
+            color: #666;
+            font-size: 12px;
+        }
+
+        /* Profile Icon Section */
+        .profile-icon-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #007bff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .profile-icon i {
+            font-size: 60px;
+            color: white;
+        }
+
+        .color-picker {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .color-picker .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .color-picker .color-option.selected {
+            border-color: #333;
+        }
+
+        /* Logout Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 300px;
+            z-index: 1000;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+        }
+
+        .modal h3 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: #2c3e50;
+        }
+
+        .modal button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .modal button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <div class="navbar">
+        <ul>
+            <li><a href="/"><span>Home</span> 🏠</a></li>
+            {% if 'user' not in session %}
+                <li><a href="/login"><span>Login & Register</span> 🔑</a></li>
+            {% endif %}
+            <li><a href="/about"><span>About</span> ℹ️</a></li>
+            <li><a href="/contact"><span>Contact Us</span> ✉️</a></li>
+            {% if 'user' in session %}
+                <li><a href="/symptom_selection"><span>Disease Prediction</span> 🩺</a></li>
+                <li><a href="/patient_history"><span>Patient History</span> 📜</a></li>
+                <li><a href="/profile"><span>Profile</span> 👤</a></li>
+                <li><a href="#" onclick="openLogoutModal()"><span>Logout</span> 🚪</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content">
+        <div class="dashboard-container">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <h1>Welcome, {{ user_data.name }}!</h1>
+                <p>Here's your personalized dashboard and profile information.</p>
+            </div>
+
+            <!-- Profile Icon Section -->
+            <div class="profile-icon-section">
+                <div class="profile-icon" id="profileIcon" style="background-color: #007bff;">
+                    👤
+                </div>
+                <div class="color-picker">
+                    <div class="color-option" style="background-color: #007bff;" onclick="changeIconColor('#007bff')"></div>
+                    <div class="color-option" style="background-color: #28a745;" onclick="changeIconColor('#28a745')"></div>
+                    <div class="color-option" style="background-color: #dc3545;" onclick="changeIconColor('#dc3545')"></div>
+                    <div class="color-option" style="background-color: #ffc107;" onclick="changeIconColor('#ffc107')"></div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Profile Section -->
+                <div class="dashboard-card">
+                    <h3>Profile Information</h3>
+                    <div class="profile-info">
+                        <div class="profile-card">
+                            <p><strong>Name:</strong> {{ user_data.name }}</p>
+                            <p><strong>Email:</strong> {{ user_data.email }}</p>
+                            <p><strong>Role:</strong> {{ user_data.role }}</p>
+                            <button class="edit-btn" onclick="editProfile()">Edit Profile</button>
+                        </div>
+                        <div class="profile-card">
+                            <h3>Account Security</h3>
+                            <p><strong>Password:</strong> ********</p>
+                            <button class="edit-btn" onclick="changePassword()">Change Password</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Patient Form Details Section -->
+                <div class="dashboard-card patient-form-details">
+                    <h3>Patient Form Details</h3>
+                    <div class="details">
+                        {% if patient_data %}
+                            <p><strong>Name:</strong> {{ patient_data.name }}</p>
+                            <p><strong>Age:</strong> {{ patient_data.age }}</p>
+                            <p><strong>Gender:</strong> {{ patient_data.gender }}</p>
+                            <p><strong>Contact:</strong> {{ patient_data.contact }}</p>
+                            <p><strong>Address:</strong> {{ patient_data.address }}</p>
+                        {% else %}
+                            <p>No patient form data available. <a href="{{ url_for('patient_form') }}">Fill out the form</a>.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Recent Activity Section -->
+                <div class="dashboard-card recent-activity">
+                    <h3>Recent Activity</h3>
+                    <ul class="activity-list">
+                        {% for activity in recent_activity %}
+                            <li>
+                                <p>{{ activity.description }}</p>
+                                <p class="timestamp">{{ activity.timestamp }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutModal" class="modal">
+        <h3>Logout Confirmation</h3>
+        <p>Are you sure you want to logout?</p>
+        <button onclick="confirmLogout()">Yes, Logout</button>
+        <button onclick="closeLogoutModal()">Cancel</button>
+    </div>
+    <div id="logoutModalOverlay" class="modal-overlay"></div>
+
+    <script>
+        // JavaScript Functions
+        function editProfile() {
+            alert("Edit Profile feature coming soon!");
+        }
+
+        function changePassword() {
+            alert("Change Password feature coming soon!");
+        }
+
+        // Change Profile Icon Color
+        function changeIconColor(color) {
+            const profileIcon = document.getElementById("profileIcon");
+            profileIcon.style.backgroundColor = color;
+        }
+
+        // Logout Modal Functions
+        function openLogoutModal() {
+            document.getElementById('logoutModal').style.display = 'block';
+            document.getElementById('logoutModalOverlay').style.display = 'block';
+        }
+
+        function closeLogoutModal() {
+            document.getElementById('logoutModal').style.display = 'none';
+            document.getElementById('logoutModalOverlay').style.display = 'none';
+        }
+
+        function confirmLogout() {
+            window.location.href = "/logout"; // Redirect to the logout route
+        }
+    </script>
+</body>
+</html>

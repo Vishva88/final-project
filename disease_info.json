@@ -1,0 +1,82 @@
+{
+    "COVID-19": {
+        "description": "COVID-19 is a respiratory illness caused by the SARS-CoV-2 virus. It can range from mild to severe and affects different people in different ways.",
+        "causes": "Infection with the SARS-CoV-2 virus, which spreads through respiratory droplets.",
+        "treatment": [
+            "Rest and self-isolation",
+            "Stay hydrated",
+            "Over-the-counter medications for symptoms",
+            "Seek medical attention if symptoms are severe"
+        ],
+        "prevention": [
+            "Get vaccinated",
+            "Wear masks in crowded places",
+            "Maintain good hand hygiene",
+            "Practice social distancing"
+        ]
+    },
+    "Common Cold": {
+        "description": "The common cold is a viral infection of the upper respiratory tract that primarily affects the nose and throat.",
+        "causes": "Various viruses, most commonly rhinoviruses",
+        "treatment": [
+            "Rest",
+            "Stay hydrated",
+            "Over-the-counter cold medications",
+            "Nasal decongestants"
+        ],
+        "prevention": [
+            "Wash hands frequently",
+            "Avoid close contact with infected people",
+            "Maintain good immune system health",
+            "Keep surfaces clean"
+        ]
+    },
+    "Flu": {
+        "description": "Influenza (flu) is a contagious respiratory illness that can cause mild to severe illness, and sometimes can lead to death in vulnerable populations.",
+        "causes": "Influenza viruses that infect the nose, throat, and lungs",
+        "treatment": [
+            "Rest and stay home",
+            "Drink plenty of fluids",
+            "Antiviral medications if prescribed",
+            "Over-the-counter pain relievers"
+        ],
+        "prevention": [
+            "Annual flu vaccination",
+            "Regular hand washing",
+            "Avoid touching face",
+            "Stay home when sick"
+        ]
+    },
+    "Migraine": {
+        "description": "A migraine is a headache that can cause severe throbbing pain or a pulsing sensation, usually on one side of the head, often accompanied by nausea, vomiting, and extreme sensitivity to light and sound.",
+        "causes": "Genetic and environmental factors, certain triggers like stress or hormonal changes",
+        "treatment": [
+            "Rest in a quiet, dark room",
+            "Pain relief medications",
+            "Preventive medications",
+            "Lifestyle changes"
+        ],
+        "prevention": [
+            "Identify and avoid triggers",
+            "Maintain regular sleep schedule",
+            "Stay hydrated",
+            "Stress management"
+        ]
+    },
+    "Allergies": {
+        "description": "Allergies occur when your immune system reacts to a foreign substance that doesn't cause a reaction in most people.",
+        "causes": "Various allergens including pollen, dust mites, pet dander, or certain foods",
+        "treatment": [
+            "Antihistamines",
+            "Decongestants",
+            "Nasal corticosteroids",
+            "Immunotherapy in severe cases"
+        ],
+        "prevention": [
+            "Avoid known allergens",
+            "Keep indoor air clean",
+            "Use air filters",
+            "Regular cleaning to reduce allergens"
+        ]
+    }
+}
